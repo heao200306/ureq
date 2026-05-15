@@ -94,13 +94,6 @@ importers:
         version: 1.6.1(@vitest/ui@1.6.1)
 
   packages/xrequest:
-    dependencies:
-      '@xrequest/core':
-        specifier: workspace:*
-        version: link:../core
-      '@xrequest/entry':
-        specifier: workspace:*
-        version: link:../entry
     devDependencies:
       typescript:
         specifier: ^5.3.3
