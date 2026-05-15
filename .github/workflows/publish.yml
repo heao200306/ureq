@@ -1,17 +1,16 @@
 name: Publish to NPM
 
 on:
-  release:
-    types: [created]
   workflow_dispatch:
     inputs:
       version:
         description: 'Version to publish (e.g., 1.0.0)'
-        required: false
+        required: true
+        type: string
 
 jobs:
   publish:
-    name: Publish Packages
+    name: Publish Packages v${{ github.event.inputs.version }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,10 +38,11 @@ jobs:
           pnpm build:entry
           pnpm build:main
 
-      - name: Update version for workspace dependencies
-        if: github.event.inputs.version != ''
+      - name: Update @xrequest/core version
         run: |
-          pnpm workspace foreach --no-private exec npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          cd packages/core
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          cd ../..
 
       - name: Publish @xrequest/core
         run: |
@@ -52,6 +52,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Update @xrequest/xhr version
+        run: |
+          cd packages/xhr
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          sed -i 's/"@xrequest\/core": "workspace:\*"/"@xrequest\/core": "${{ github.event.inputs.version }}"/' package.json
+          cd ../..
+
       - name: Publish @xrequest/xhr
         run: |
           cd packages/xhr
@@ -59,6 +66,13 @@ jobs:
           cd ../..
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Update @xrequest/fetch version
+        run: |
+          cd packages/fetch
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          sed -i 's/"@xrequest\/core": "workspace:\*"/"@xrequest\/core": "${{ github.event.inputs.version }}"/' package.json
+          cd ../..
 
       - name: Publish @xrequest/fetch
         run: |
@@ -68,6 +82,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Update @xrequest/entry version
+        run: |
+          cd packages/entry
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          sed -i 's/"@xrequest\/core": "workspace:\*"/"@xrequest\/core": "${{ github.event.inputs.version }}"/' package.json
+          sed -i 's/"@xrequest\/xhr": "workspace:\*"/"@xrequest\/xhr": "${{ github.event.inputs.version }}"/' package.json
+          sed -i 's/"@xrequest\/fetch": "workspace:\*"/"@xrequest\/fetch": "${{ github.event.inputs.version }}"/' package.json
+          cd ../..
+
       - name: Publish @xrequest/entry
         run: |
           cd packages/entry
@@ -75,6 +98,16 @@ jobs:
           cd ../..
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Update xrequest version
+        run: |
+          cd packages/xrequest
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          sed -i 's/"@xrequest\/core": "workspace:\*"/"@xrequest\/core": "${{ github.event.inputs.version }}"/' package.json
+          sed -i 's/"@xrequest\/xhr": "workspace:\*"/"@xrequest\/xhr": "${{ github.event.inputs.version }}"/' package.json
+          sed -i 's/"@xrequest\/fetch": "workspace:\*"/"@xrequest\/fetch": "${{ github.event.inputs.version }}"/' package.json
+          sed -i 's/"@xrequest\/entry": "workspace:\*"/"@xrequest\/entry": "${{ github.event.inputs.version }}"/' package.json
+          cd ../..
 
       - name: Publish xrequest
         run: |
@@ -84,13 +117,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create GitHub Release
-        if: github.event.inputs.version != ''
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.event.inputs.version }}
-          release_name: v${{ github.event.inputs.version }}
-          draft: false
-          prerelease: false
+      - name: Create Git Tag
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git commit -m "chore: release v${{ github.event.inputs.version }}"
+          git tag v${{ github.event.inputs.version }}
+          git push origin main --tags
