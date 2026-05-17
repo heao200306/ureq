@@ -28,27 +28,30 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
+
+      - name: Install xrequest dependencies
+        run: |
+          cd xrequest
+          pnpm install
 
       - name: Build xrequest package
         run: |
-          cd packages/xrequest
+          cd xrequest
           pnpm build
-          cd ../..
 
       - name: Update version
         run: |
-          cd packages/xrequest
+          cd xrequest
           npm version ${{ github.event.inputs.version }} --no-git-tag-version
-          cd ../..
+          cd ..
 
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          cd packages/xrequest
+          cd xrequest
           npm publish --access public
-          cd ../..
 
       - name: Create Git Tag
         run: |

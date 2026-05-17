@@ -5,7 +5,7 @@ import type {
   RequestError,
   RequestHeaders,
   GlobalConfig,
-} from '@xrequest/core';
+} from '../core';
 import {
   mergeHeaders,
   buildFullPath,
@@ -13,7 +13,7 @@ import {
   isBlob,
   isArrayBuffer,
   isURLSearchParams,
-} from '@xrequest/core';
+} from '../core';
 
 export class XHREngine implements EngineAdapter {
   readonly name: 'xhr' = 'xhr';

@@ -2,9 +2,9 @@ import type {
   EngineAdapter,
   GlobalConfig,
   RequestEngineType,
-} from '@xrequest/core';
-import { XHREngine } from '@xrequest/xhr';
-import { FetchEngine } from '@xrequest/fetch';
+} from '../core';
+import { XHREngine } from '../xhr/xhr-engine';
+import { FetchEngine } from '../fetch/fetch-engine';
 
 export class EngineManager {
   private engines: Map<RequestEngineType, EngineAdapter> = new Map();
