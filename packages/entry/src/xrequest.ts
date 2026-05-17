@@ -7,10 +7,10 @@ import type {
   XRequestStatic,
   XRequestInstance,
   Interceptors,
-} from '../core';
+} from '@xrequest/core';
 import { InterceptorManager } from './interceptor';
 import { EngineManager } from './engine-manager';
-import { mergeConfig, buildFullPath } from '../core';
+import { mergeConfig, buildFullPath } from '@xrequest/core';
 
 export class XRequest {
   engineManager: EngineManager;

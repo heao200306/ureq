@@ -1,4 +1,4 @@
-export { XRequest, xrequest } from '../components/entry/xrequest';
+export { XRequest, xrequest } from './xrequest';
 export type {
   RequestConfig,
   Response,
@@ -18,7 +18,7 @@ export type {
   InterceptorId,
   InterceptorRequestHook,
   InterceptorResponseHook,
-} from '../components/core/types';
-export { EngineManager } from '../components/entry/engine-manager';
-export { XHREngine } from '../components/xhr/xhr-engine';
-export { FetchEngine } from '../components/fetch/fetch-engine';
+} from './types';
+export { EngineManager } from './engine-manager';
+export { XHREngine } from './xhr-engine';
+export { FetchEngine } from './fetch-engine';
