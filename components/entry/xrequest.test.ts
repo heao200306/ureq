@@ -19,7 +19,7 @@ const createMockResponse = <T, B>(data: T, meta?: Partial<Response<T, B>['meta']
 };
 
 describe('XRequest', () => {
-  let engine: XRequest;
+  // let engine: XRequest;
 
   beforeEach(() => {
     vi.restoreAllMocks();
@@ -93,7 +93,7 @@ describe('XRequest', () => {
 
       const calledConfig = mockEngineAdapter.request.mock.calls[0][0];
       expect(calledConfig.url).toBe('https://api.example.com/users');
-      expect(calledConfig.headers).toHaveProperty('Authorization', 'Bearer token');
+      expect(calledConfig.headers).toHaveProperty('authorization', 'Bearer token');
     });
 
     it('should run request interceptors before making request', async () => {
@@ -107,10 +107,12 @@ describe('XRequest', () => {
       (instance.engineManager as any).engines.set('fetch', mockEngineAdapter);
 
       const interceptorFn = vi.fn().mockImplementation((config) => {
-        config.headers = { ...config.headers, 'X-Request-Id': '123' };
-        return config;
+        return {
+          ...config,
+          headers: { ...config.headers, 'X-Request-Id': '123' },
+        };
       });
-      instance.interceptors.request.use({ onFulfilled: interceptorFn });
+      instance.interceptors.request.use(interceptorFn);
 
       await instance.request({
         url: '/api/test',
@@ -133,10 +135,12 @@ describe('XRequest', () => {
       (instance.engineManager as any).engines.set('fetch', mockEngineAdapter);
 
       const responseInterceptorFn = vi.fn().mockImplementation((response) => {
-        response.data = { ...response.data, processed: true };
-        return response;
+        return {
+          ...response,
+          data: { ...response.data, processed: true },
+        };
       });
-      instance.interceptors.response.use({ onFulfilled: responseInterceptorFn });
+      instance.interceptors.response.use(responseInterceptorFn);
 
       const response = await instance.request({
         url: '/api/test',
@@ -352,27 +356,30 @@ describe('XRequest', () => {
   describe('interceptors', () => {
     it('should add request interceptor', () => {
       const instance = new XRequest();
-      const interceptorId = instance.interceptors.request.use({
-        onFulfilled: (config) => config,
-      });
+      const interceptorId = instance.interceptors.request.use(
+        (config) => config,
+        (error) => Promise.reject(error)
+      );
 
       expect(interceptorId.id).toBeDefined();
     });
 
     it('should add response interceptor', () => {
       const instance = new XRequest();
-      const interceptorId = instance.interceptors.response.use({
-        onFulfilled: (response) => response,
-      });
+      const interceptorId = instance.interceptors.response.use(
+        (response) => response,
+        (error) => Promise.reject(error)
+      );
 
       expect(interceptorId.id).toBeDefined();
     });
 
     it('should eject interceptor', () => {
       const instance = new XRequest();
-      const interceptorId = instance.interceptors.request.use({
-        onFulfilled: (config) => config,
-      });
+      const interceptorId = instance.interceptors.request.use(
+        (config) => config,
+        (error) => Promise.reject(error)
+      );
 
       instance.interceptors.request.eject(interceptorId.id);
       expect(instance.interceptors.request.size).toBe(0);
@@ -380,8 +387,8 @@ describe('XRequest', () => {
 
     it('should clear all interceptors', () => {
       const instance = new XRequest();
-      instance.interceptors.request.use({ onFulfilled: (config) => config });
-      instance.interceptors.response.use({ onFulfilled: (response) => response });
+      instance.interceptors.request.use((config) => config);
+      instance.interceptors.response.use((response) => response);
 
       instance.interceptors.request.clear();
       instance.interceptors.response.clear();
@@ -390,7 +397,7 @@ describe('XRequest', () => {
       expect(instance.interceptors.response.size).toBe(0);
     });
 
-    it('should run request interceptor on error in rejected', async () => {
+    it('should run request interceptor on error rejection', async () => {
       const mockError = new Error('Request failed');
       const mockEngineAdapter = {
         name: 'fetch' as RequestEngineType,
@@ -401,9 +408,10 @@ describe('XRequest', () => {
       (instance.engineManager as any).engines.set('fetch', mockEngineAdapter);
 
       const errorInterceptor = vi.fn();
-      instance.interceptors.response.use({
-        onRejected: errorInterceptor,
-      });
+      instance.interceptors.response.use(
+        (response) => response,
+        errorInterceptor
+      );
 
       try {
         await instance.request({

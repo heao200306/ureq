@@ -12,12 +12,11 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "composite": true,
-    "incremental": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "exclude": ["node_modules", "dist", "**/dist"]
+  "include": ["vitest.config.ts", "eslint.config.js", "src", "components"],
+  "exclude": ["node_modules", "dist"]
 }

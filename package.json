@@ -1,23 +1,40 @@
 {
-  "name": "xrequest-monorepo",
+  "name": "xrequest",
   "version": "1.0.0",
-  "private": true,
   "description": "A lightweight HTTP request library with dual-engine support (XHR & Fetch)",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "dist/index.d.mts",
+        "default": "dist/index.mjs"
+      },
+      "require": {
+        "types": "dist/index.d.ts",
+        "default": "dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "cd xrequest && pnpm build",
-    "dev": "cd xrequest && pnpm dev",
-    "clean": "rm -rf xrequest/dist node_modules",
-    "lint": "cd xrequest && pnpm lint",
-    "lint:fix": "cd xrequest && pnpm lint:fix",
+    "build": "npx tsup src/index.ts --format cjs,esm --dts --clean --outDir dist",
+    "dev": "npx tsup src/index.ts --format cjs,esm --dts --watch",
+    "clean": "rm -rf dist node_modules",
+    "lint": "eslint src components --no-ignore",
+    "lint:fix": "eslint src components --no-ignore --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "typecheck": "cd xrequest && pnpm typecheck",
+    "typecheck": "tsc --noEmit",
     "prepare": "husky install",
     "release": "bumpp --commit --tag --push",
     "release:major": "bumpp --commit --tag --push --major",
@@ -32,7 +49,9 @@
     "bumpp": "^9.4.0",
     "eslint": "^8.56.0",
     "husky": "^9.0.0",
+    "jsdom": "^24.0.0",
     "lint-staged": "^15.2.0",
+    "tsup": "^8.0.0",
     "typescript": "^5.3.3",
     "vitest": "^1.2.0"
   },

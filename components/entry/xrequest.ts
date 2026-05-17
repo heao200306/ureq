@@ -132,19 +132,23 @@ export class XRequest {
   }
 
   private mergeGlobalConfig<B>(config: RequestConfig<B>): RequestConfig<B> {
-    const globalRequestConfig: RequestConfig<B> = {
-      url: buildFullPath(this.globalConfig.baseURL, config.url),
-      method: config.method || 'GET',
-      headers: this.globalConfig.headers,
-      timeout: this.globalConfig.timeout,
-      responseType: this.globalConfig.responseType,
-      withCredentials: this.globalConfig.withCredentials,
-      validateStatus: this.globalConfig.validateStatus,
-      onUploadProgress: this.globalConfig.onUploadProgress,
-      onDownloadProgress: this.globalConfig.onDownloadProgress,
-    };
-
-    return mergeConfig(globalRequestConfig, config);
+    const fullURL = buildFullPath(this.globalConfig.baseURL, config.url);
+    const merged = mergeConfig(
+      {
+        url: fullURL,
+        method: config.method || 'GET',
+        headers: this.globalConfig.headers,
+        timeout: this.globalConfig.timeout,
+        responseType: this.globalConfig.responseType,
+        withCredentials: this.globalConfig.withCredentials,
+        validateStatus: this.globalConfig.validateStatus,
+        onUploadProgress: this.globalConfig.onUploadProgress,
+        onDownloadProgress: this.globalConfig.onDownloadProgress,
+      },
+      config
+    );
+    merged.url = fullURL;
+    return merged;
   }
 
   private async runRequestInterceptors<B>(config: RequestConfig<B>): Promise<RequestConfig<B>> {

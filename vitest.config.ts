@@ -4,7 +4,7 @@ import { resolve } from 'path';
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'browser',
+    environment: 'jsdom',
     include: ['**/*.test.ts'],
     exclude: ['node_modules', 'dist', '**/*.spec.ts'],
     coverage: {
@@ -27,10 +27,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@xrequest/core': resolve(__dirname, 'xrequest/components/core'),
-      '@xrequest/xhr': resolve(__dirname, 'xrequest/components/xhr'),
-      '@xrequest/fetch': resolve(__dirname, 'xrequest/components/fetch'),
-      '@xrequest/entry': resolve(__dirname, 'xrequest/components/entry'),
+      '@xrequest/core': resolve(__dirname, 'components/core'),
+      '@xrequest/xhr': resolve(__dirname, 'components/xhr'),
+      '@xrequest/fetch': resolve(__dirname, 'components/fetch'),
+      '@xrequest/entry': resolve(__dirname, 'components/entry'),
     },
   },
 });
