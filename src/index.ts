@@ -1,4 +1,4 @@
-export { GenericRequest, genericRequest } from '../components/entry/genericRequest';
+export { UReq as UReq, ureq as ureq } from '../components/entry/ureq';
 export type {
   RequestConfig,
   Response,
@@ -11,8 +11,8 @@ export type {
   DownloadProgressEvent,
   ResponseType,
   RequestHeaders,
-  GenericRequestStatic,
-  GenericRequestInstance,
+  UReqStatic,
+  UReqInstance,
   Interceptors,
   ProgressEvent,
   InterceptorId,

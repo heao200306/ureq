@@ -10,7 +10,7 @@ on:
 
 jobs:
   publish:
-    name: Publish generic-request v${{ github.event.inputs.version }}
+    name: Publish ureq v${{ github.event.inputs.version }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

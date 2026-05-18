@@ -1,14 +1,14 @@
-# Contributing to genericRequest
+# Contributing to ureq
 
-Thank you for your interest in contributing to genericRequest!
+Thank you for your interest in contributing to ureq!
 
 ## Getting Started
 
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/genericRequest.git
-   cd genericRequest
+   git clone https://github.com/YOUR_USERNAME/ureq.git
+   cd ureq
    ```
 3. Install dependencies:
    ```bash
@@ -47,7 +47,7 @@ packages/
 ├── xhr/           # XMLHttpRequest engine
 ├── fetch/         # Fetch API engine
 ├── entry/         # Internal entry with interceptors
-└── genericRequest-main/ # Main package for npm distribution
+└── ureq-main/ # Main package for npm distribution
 ```
 
 When contributing, you may need to modify one or more of these packages.

@@ -4,15 +4,15 @@ import type {
   RequestError,
   GlobalConfig,
   RequestEngineType,
-  GenericRequestStatic,
-  GenericRequestInstance,
+  UReqStatic,
+  UReqInstance,
   Interceptors,
 } from '../core';
 import { InterceptorManager } from './interceptor';
 import { EngineManager } from './engine-manager';
 import { mergeConfig, buildFullPath } from '../core';
 
-export class GenericRequest {
+export class UReq {
   engineManager: EngineManager;
   globalConfig: GlobalConfig;
   requestInterceptors: InterceptorManager;
@@ -110,8 +110,8 @@ export class GenericRequest {
     });
   }
 
-  create(config?: GlobalConfig): GenericRequestInstance {
-    return new GenericRequest({ ...this.globalConfig, ...config }) as unknown as GenericRequestInstance;
+  create(config?: GlobalConfig): UReqInstance {
+    return new UReq({ ...this.globalConfig, ...config }) as unknown as UReqInstance;
   }
 
   setEngine(engine: RequestEngineType): void {
@@ -224,50 +224,50 @@ export class GenericRequest {
   }
 }
 
-const defaultGenericRequest = new GenericRequest();
+const defaultUReq = new UReq();
 
-export const genericRequest: GenericRequestStatic = function <T = unknown, B = unknown>(
+export const ureq: UReqStatic = function <T = unknown, B = unknown>(
   config: RequestConfig<B>
 ): Promise<Response<T, B>> {
-  return defaultGenericRequest.request<T, B>(config);
-} as GenericRequestStatic;
+  return defaultUReq.request<T, B>(config);
+} as UReqStatic;
 
-genericRequest.get = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
-  defaultGenericRequest.get<T, B>(url, config);
+ureq.get = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
+  defaultUReq.get<T, B>(url, config);
 
-genericRequest.post = <T = unknown, B = unknown>(url: string, data?: B, config?: RequestConfig<B>) =>
-  defaultGenericRequest.post<T, B>(url, data, config);
+ureq.post = <T = unknown, B = unknown>(url: string, data?: B, config?: RequestConfig<B>) =>
+  defaultUReq.post<T, B>(url, data, config);
 
-genericRequest.put = <T = unknown, B = unknown>(url: string, data?: B, config?: RequestConfig<B>) =>
-  defaultGenericRequest.put<T, B>(url, data, config);
+ureq.put = <T = unknown, B = unknown>(url: string, data?: B, config?: RequestConfig<B>) =>
+  defaultUReq.put<T, B>(url, data, config);
 
-genericRequest.delete = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
-  defaultGenericRequest.delete<T, B>(url, config);
+ureq.delete = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
+  defaultUReq.delete<T, B>(url, config);
 
-genericRequest.patch = <T = unknown, B = unknown>(url: string, data?: B, config?: RequestConfig<B>) =>
-  defaultGenericRequest.patch<T, B>(url, data, config);
+ureq.patch = <T = unknown, B = unknown>(url: string, data?: B, config?: RequestConfig<B>) =>
+  defaultUReq.patch<T, B>(url, data, config);
 
-genericRequest.head = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
-  defaultGenericRequest.head<T, B>(url, config);
+ureq.head = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
+  defaultUReq.head<T, B>(url, config);
 
-genericRequest.options = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
-  defaultGenericRequest.options<T, B>(url, config);
+ureq.options = <T = unknown, B = unknown>(url: string, config?: RequestConfig<B>) =>
+  defaultUReq.options<T, B>(url, config);
 
-genericRequest.create = (config?: GlobalConfig) => createMixedInstance(config || {});
+ureq.create = (config?: GlobalConfig) => createMixedInstance(config || {});
 
-genericRequest.setEngine = (engine: RequestEngineType) => defaultGenericRequest.setEngine(engine);
+ureq.setEngine = (engine: RequestEngineType) => defaultUReq.setEngine(engine);
 
-genericRequest.getEngine = () => defaultGenericRequest.getEngine();
+ureq.getEngine = () => defaultUReq.getEngine();
 
-genericRequest.interceptors = defaultGenericRequest.interceptors;
+ureq.interceptors = defaultUReq.interceptors;
 
-function createEngineInstance(engineType: RequestEngineType, globalConfig: GlobalConfig): GenericRequest {
-  const instance = new GenericRequest(globalConfig);
+function createEngineInstance(engineType: RequestEngineType, globalConfig: GlobalConfig): UReq {
+  const instance = new UReq(globalConfig);
   instance.setEngine(engineType);
   return instance;
 }
 
-function mixInstances(target: GenericRequest, sources: GenericRequest[]): GenericRequestInstance {    
+function mixInstances(target: UReq, sources: UReq[]): UReqInstance {    
   const mixedInstance = Object.create(Object.getPrototypeOf(target));
 
   const allMethods: Record<string, Function> = {};
@@ -367,13 +367,13 @@ function mixInstances(target: GenericRequest, sources: GenericRequest[]): Generi
     configurable: true,
   });
 
-  return mixedInstance as GenericRequestInstance;
+  return mixedInstance as UReqInstance;
 }
 
-export function createMixedInstance(config: GlobalConfig): GenericRequestInstance {
+export function createMixedInstance(config: GlobalConfig): UReqInstance {
   const engineChain = config.engine ? (Array.isArray(config.engine) ? config.engine : [config.engine]) : ['fetch'];
 
-  const instances: GenericRequest[] = [];
+  const instances: UReq[] = [];
   for (const engineType of engineChain) {
     instances.push(createEngineInstance(engineType, config));
   }
@@ -382,7 +382,7 @@ export function createMixedInstance(config: GlobalConfig): GenericRequestInstanc
   const sourceInstances = instances.slice(1);
 
   if (sourceInstances.length === 0) {
-    return targetInstance as unknown as GenericRequestInstance;
+    return targetInstance as unknown as UReqInstance;
   }
 
   const mixed = mixInstances(targetInstance, sourceInstances);
