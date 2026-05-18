@@ -27,10 +27,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@ureq/core': resolve(__dirname, 'components/core'),
-      '@ureq/xhr': resolve(__dirname, 'components/xhr'),
-      '@ureq/fetch': resolve(__dirname, 'components/fetch'),
-      '@ureq/entry': resolve(__dirname, 'components/entry'),
+      '@generic-request/core': resolve(__dirname, 'components/core'),
+      '@generic-request/xhr': resolve(__dirname, 'components/xhr'),
+      '@generic-request/fetch': resolve(__dirname, 'components/fetch'),
+      '@generic-request/entry': resolve(__dirname, 'components/entry'),
     },
   },
 });

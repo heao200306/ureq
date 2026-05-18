@@ -45,7 +45,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: What version of ureq are you using?
+      description: What version of genericRequest are you using?
       placeholder: e.g., 1.0.0
     validations:
       required: true

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024-01-01
+## [0.0.0] - 2024-01-01
 
 ### Added
 
@@ -22,12 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Global configuration via `create()`
 - Instance methods for all HTTP verbs (GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS)
 
-### Packages
+### Components
 
-- `@ureq/core` - Core types and utilities
-- `@ureq/xhr` - XMLHttpRequest engine implementation
-- `@ureq/fetch` - Fetch API engine implementation
-- `@ureq/entry` - Internal entry implementation
-- `ureq` - Main entry point for npm distribution
+- `components/core` - Core types and utilities
+- `components/xhr` - XMLHttpRequest engine implementation
+- `components/fetch` - Fetch API engine implementation
+- `components/entry` - Internal entry implementation
+- `src/index` - Main entry point for npm distribution
 
-[1.0.0]: https://github.com/ureq/ureq/releases/tag/v1.0.0
+[0.0.0]: https://github.com/genericRequest/genericRequest/releases/tag/v0.0.0

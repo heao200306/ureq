@@ -1,14 +1,14 @@
-# Contributing to ureq
+# Contributing to genericRequest
 
-Thank you for your interest in contributing to ureq!
+Thank you for your interest in contributing to genericRequest!
 
 ## Getting Started
 
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/ureq.git
-   cd ureq
+   git clone https://github.com/YOUR_USERNAME/genericRequest.git
+   cd genericRequest
    ```
 3. Install dependencies:
    ```bash
@@ -30,7 +30,7 @@ Thank you for your interest in contributing to ureq!
 
 | Command              | Description                  |
 | -------------------- | ---------------------------- |
-| `pnpm build`         | Build all packages           |
+| `pnpm build`         | Build the project            |
 | `pnpm dev`           | Run in development mode      |
 | `pnpm test`          | Run unit tests               |
 | `pnpm test:watch`    | Run tests in watch mode      |
@@ -39,18 +39,19 @@ Thank you for your interest in contributing to ureq!
 | `pnpm lint:fix`      | Auto-fix ESLint issues       |
 | `pnpm typecheck`     | Run TypeScript type checking |
 
-### Package Structure
+### Project Structure
 
 ```
-packages/
-├── core/           # Core types and utilities
-├── xhr/           # XMLHttpRequest engine
-├── fetch/         # Fetch API engine
-├── entry/         # Internal entry with interceptors
-└── ureq-main/ # Main package for npm distribution
+src/
+└── index.ts              # Main entry point
+└── components/
+    ├── core/           # Core types and utilities
+    ├── xhr/            # XMLHttpRequest engine
+    ├── fetch/          # Fetch API engine
+    └── entry/          # Internal entry with interceptors
 ```
 
-When contributing, you may need to modify one or more of these packages.
+When contributing, you may need to modify one or more of these components.
 
 ## Making Changes
 

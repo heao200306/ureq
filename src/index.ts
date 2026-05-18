@@ -1,4 +1,4 @@
-export { UReq as UReq, ureq as ureq } from '../components/entry/ureq';
+export { GenericRequest, genericRequest } from './components/entry/genericRequest';
 export type {
   RequestConfig,
   Response,
@@ -11,14 +11,14 @@ export type {
   DownloadProgressEvent,
   ResponseType,
   RequestHeaders,
-  UReqStatic,
-  UReqInstance,
+  GenericRequestStatic,
+  GenericRequestInstance,
   Interceptors,
   ProgressEvent,
   InterceptorId,
   InterceptorRequestHook,
   InterceptorResponseHook,
-} from '../components/core/types';
-export { EngineManager } from '../components/entry/engine-manager';
-export { XHREngine } from '../components/xhr/xhr-engine';
-export { FetchEngine } from '../components/fetch/fetch-engine';
+} from './components/core/types';
+export { EngineManager } from './components/entry/engine-manager';
+export { XHREngine } from './components/xhr/xhr-engine';
+export { FetchEngine } from './components/fetch/fetch-engine';
